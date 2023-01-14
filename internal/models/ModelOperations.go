@@ -77,9 +77,9 @@ type GameRatingLog struct {
 
 type UsersAward struct {
 	gorm.Model
-	Username string `json:"username"`
+	Username    string `json:"username"`
 	PhoneNumber string `json:"phone_number"`
-	Name string `json:"name"`
+	Name        string `json:"name"`
 }
 
 type AuthCodes struct {
@@ -89,9 +89,14 @@ type AuthCodes struct {
 }
 
 func DbSqlMigration(url string) *gorm.DB {
-	db, err := gorm.Open("mysql", url)
-	if err != nil {
-		log.Println(err)
+	var db *gorm.DB
+	var err error
+	for i := 1; i < 5; i++ {
+		db, err = gorm.Open("mysql", url)
+		if err != nil {
+			log.Println(err)
+			time.Sleep(time.Duration(4) * time.Second)
+		}
 	}
 	db = db.Set("gorm:table_options", "ENGINE=InnoDB CHARSET=utf8mb4 auto_increment=1")
 	db.AutoMigrate(&ChatRoom{})

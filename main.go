@@ -34,10 +34,11 @@ func main() {
 		w.WriteHeader(http.StatusNoContent)
 		return
 	})
-
 	router.StrictSlash(true)
 	// migration
-	db := models.DbSqlMigration("aicam:021021ali@tcp(127.0.0.1:3306)/messenger_api?charset=utf8mb4&parseTime=True")
+	db := models.DbSqlMigration("root:021021ali@tcp(goapp_mysql:3306)/messenger_api?charset=utf8mb4&parseTime=True")
+
+	log.Logger.Info("DB connected")
 	// http handler
 	router.HandleFunc("/welcome/{username}/{shop_id}", func(w http.ResponseWriter, r *http.Request) {
 		enableCors(w)
@@ -158,6 +159,7 @@ func main() {
 		_, _ = writer.Write([]byte("E4N0bAE-zp3oi9GvD5xTXYGhz61uEgt7-ycfCLpbaPk.Ua65auf1IP-HXX6NdYhTPQHZagX7G-wA9NhQsq-Sw74"))
 	})
 	// ssl END
+	log.Logger.Info("Server started successfully!")
 	err := http.ListenAndServe("0.0.0.0:4500", router)
 	if err != nil {
 		fmt.Println(err)

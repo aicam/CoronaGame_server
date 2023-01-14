@@ -1,0 +1,34 @@
+version: '3.7'
+services:
+  app:
+    container_name: goapp
+    build: .
+    ports:
+      - 4524:4500
+    restart: on-failure
+    volumes:
+      - goapp:/usr/src/app/
+    depends_on:
+      - mysql
+    networks:
+      - goapp
+  mysql:
+    container_name: goapp_mysql
+    image: mysql:5.7.16
+    environment:
+      - MYSQL_DATABASE=messenger_api
+      - MYSQL_ROOT_PASSWORD=021021ali
+      - MYSQL_ROOT_HOST=0.0.0.0
+    volumes:
+      - mysql_volume:/var/lib/mysql
+    networks:
+      - goapp
+
+volumes:
+  goapp:
+  mysql_volume:
+
+# Networks to be created to facilitate communication between containers
+networks:
+  goapp:
+    driver: bridge
