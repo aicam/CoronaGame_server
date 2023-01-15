@@ -382,7 +382,8 @@ func SelectChatroomGame(chatroomID uint, db *gorm.DB) uint {
 	rnd := rand.Intn(4)
 	chatroomGame := ChatroomGameStarted{ChatroomID: chatroomID}
 	db.Where(chatroomGame).Assign(ChatroomGameStarted{GameID: games[rnd]}).FirstOrCreate(&chatroomGame)
-	return games[rnd]
+	// TODO: return a random game
+	return 4
 }
 
 func GetChatroomGameCondition(chatroomID uint, db *gorm.DB) uint {
